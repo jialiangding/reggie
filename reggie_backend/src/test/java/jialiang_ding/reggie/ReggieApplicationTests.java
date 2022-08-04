@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 @SpringBootApplication
 @MapperScan("jialiang_ding.reggie.mapper")
-public class ReggieApplication {
+public class ReggieApplicationTests {
     public static void main(String[] args) {
-        SpringApplication.run(ReggieApplication.class, args);
+        SpringApplication.run(ReggieApplicationTests.class, args);
         log.info("启动");
 
     }
