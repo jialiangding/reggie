@@ -7,10 +7,7 @@ import jialiang_ding.reggie.entity.Employee;
 import jialiang_ding.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.util.DigestUtils;
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,16 +25,27 @@ public class EmployeeController {
     public R<Employee> login(HttpServletRequest request, @RequestBody Employee employee){
         String password=employee.getPassword();
         String username=employee.getUsername();
-        password=DigestUtils.md5DigestAsHex(password.getBytes());
-        //查询数据库
-        LambdaQueryWrapper<Employee>  queryWrapper=new LambdaQueryWrapper<>();
-        LambdaQueryWrapper<Employee> eq = queryWrapper.eq(Employee::getUsername, employee.getUsername());
-        Employee emp = employeeService.getOne(queryWrapper);
-        log.info(emp.toString());
-
-        return R.success(emp);
+        R<Employee> login = employeeService.login(username, password);
+        if(login.getCode()==1){
+            request.getSession().setAttribute("emplyee",login.getData().getId());
+        }
+        return  login;
     }
 
+
+
+    @GetMapping("/hello")
+    public R<String> helloworld(){
+        return R.success("helloworld");
+    }
+
+
+    @PostMapping("/logout")
+    public R<String> logout(HttpServletRequest request){
+        request.getSession().removeAttribute("emplyee");
+        return  R.success("success");
+
+    }
 
 
 
