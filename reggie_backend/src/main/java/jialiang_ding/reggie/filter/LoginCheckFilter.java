@@ -1,5 +1,7 @@
 package jialiang_ding.reggie.filter;
 
+import com.alibaba.fastjson.JSON;
+import jialiang_ding.reggie.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 
@@ -33,17 +35,28 @@ public class LoginCheckFilter  implements Filter {
                 "/backend/**",
                 "/front/**"
         };
+        log.info(this.check(urls,request.getRequestURI()).toString());
 
         if ( this.check(urls,request.getRequestURI())){
+
             log.info("放行了");
             filterChain.doFilter(request,response);
+            return;
         }
         //判断访问的链接是否是需要先登录？ 如果是需要登录的  但是没有登录 拦截
         Object employee = ((HttpServletRequest) servletRequest).getSession().getAttribute("employee");
         if (employee!=null){
             //非空说明已经登录过了
+            log.info("有登录过 直接放行");
             filterChain.doFilter(request,response);
+            return;
         }
+//            输出流的方式来响应数据
+        log.info("访问需要登录的链接，没有登录 拦截");
+        log.info(request.getRequestURI());
+        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
+        return;
+
 
 
 
@@ -54,11 +67,10 @@ public class LoginCheckFilter  implements Filter {
     public Boolean check(String[] urls,String requestUrl){
 //      Arrays.asList(urls).forEach(url-> antPathMatcher.match(url,requestUrl));
         for ( String url:urls) {
-            log.info(url);
-            log.info(requestUrl);
                 boolean match = antPathMatcher.match(url, requestUrl);
-
-            return match;
+                if(match){
+                    return  match;
+                }
         }
         return  false;
         }
