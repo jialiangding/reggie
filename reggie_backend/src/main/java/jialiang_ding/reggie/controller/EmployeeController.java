@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import jialiang_ding.reggie.common.R;
 import jialiang_ding.reggie.entity.Employee;
+import jialiang_ding.reggie.exception.BusinessRuntimeException;
 import jialiang_ding.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,11 @@ public class EmployeeController {
         String username=employee.getUsername();
         R<Employee> login = employeeService.login(username, password);
         if(login.getCode()==1){
-            request.getSession().setAttribute("emplyee",login.getData().getId());
+            request.getSession().setAttribute("employee",login.getData().getId());
+
+            return  login;
+
+
         }
         return  login;
     }
@@ -42,10 +47,23 @@ public class EmployeeController {
 
     @PostMapping("/logout")
     public R<String> logout(HttpServletRequest request){
-        request.getSession().removeAttribute("emplyee");
+        request.getSession().removeAttribute("employee");
         return  R.success("success");
 
     }
+
+
+
+    @PostMapping("/save")
+    public R<String> save(){
+
+    throw new BusinessRuntimeException("sdsdsd");
+
+
+
+    }
+
+
 
 
 

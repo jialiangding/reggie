@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jialiang_ding.reggie.common.R;
 import jialiang_ding.reggie.entity.Employee;
+import jialiang_ding.reggie.exception.BusinessRuntimeException;
 import jialiang_ding.reggie.mapper.EmployeeMapper;
 import jialiang_ding.reggie.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,19 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>  
         }else {
             return  R.error("账号不存在或密码错误");
         }
+    }
+
+    @Override
+    public Employee add(Employee employee) {
+
+        LambdaQueryWrapper<Employee>  queryWrapper=new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<Employee> eq = queryWrapper.eq(Employee::getUsername, employee.getUsername());
+        Employee emp = employeeMapper.selectOne(queryWrapper);
+        if(emp==null){
+           throw new BusinessRuntimeException("员工已存在");
+        }
+
+
+        return null;
     }
 }

@@ -30,7 +30,7 @@ public class LoginCheckFilter  implements Filter {
 
         //判断本次请求 是否需要处理
         String[] urls=new String[]{
-                "/employee/login",
+                "/employee/**",
                 "/employee/logout",
                 "/backend/**",
                 "/front/**"
