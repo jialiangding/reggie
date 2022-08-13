@@ -27,7 +27,8 @@ public class LoginCheckFilter  implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request=(HttpServletRequest)servletRequest;
         HttpServletResponse response=(HttpServletResponse) servletResponse;
-
+        Long employee1 = (Long)request.getSession().getAttribute("employee");
+        System.out.println(employee1);
         //判断本次请求 是否需要处理
         String[] urls=new String[]{
                 "/employee/**",
@@ -35,11 +36,7 @@ public class LoginCheckFilter  implements Filter {
                 "/backend/**",
                 "/front/**"
         };
-        log.info(this.check(urls,request.getRequestURI()).toString());
-
         if ( this.check(urls,request.getRequestURI())){
-
-            log.info("放行了");
             filterChain.doFilter(request,response);
             return;
         }

@@ -11,7 +11,7 @@ public interface EmployeeService  extends IService<Employee> {
 
 
 
-    public R<Employee> login(String username,String password);
+    public Employee login(String username,String password);
 
     public Employee add(Employee employee);
 

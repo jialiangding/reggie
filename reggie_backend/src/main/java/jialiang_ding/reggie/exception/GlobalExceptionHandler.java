@@ -13,12 +13,40 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = BusinessRuntimeException.class)
     public R handle(BusinessRuntimeException e){
-        log.error("运行时异常-----------------");
         return  R.error(e.getMessage());
     }
+
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public R handle(MethodArgumentNotValidException e){
+        log.error("实体校验异常-----------------");
+        BindingResult bindingResult = e.getBindingResult();
+        ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
+        return  R.error(objectError.getDefaultMessage());
+    }
+
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public R handle(IllegalArgumentException e){
+        return  R.error(e.getMessage());
+    }
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = Exception.class)
+    public R handle(Exception e){
+        return  R.error(e.getMessage());
+    }
+
+
+
 
 
 }

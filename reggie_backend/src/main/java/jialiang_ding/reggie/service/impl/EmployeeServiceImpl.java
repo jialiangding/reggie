@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>  implements  EmployeeService{
@@ -20,7 +21,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>  
     private EmployeeMapper employeeMapper;
 
     @Override
-    public R<Employee> login(String username, String password) {
+    public Employee login(String username, String password) {
         password= DigestUtils.md5DigestAsHex(password.getBytes());
 
         LambdaQueryWrapper<Employee>  queryWrapper=new LambdaQueryWrapper<>();
@@ -30,17 +31,20 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>  
             if(password.equals(emp.getPassword())){
 
                 if(emp.getStatus().equals(0)){
-                    return R.error("账号已被禁用");
+                    log.debug("账号已被禁用");
+                    throw new BusinessRuntimeException("账号已被禁用");
 
                 }else {
-                    return  R.success(emp);
+                    return emp;
                 }
 
             }else {
-                return  R.error("密码错误");
+                log.debug("密码错误");
+                throw new BusinessRuntimeException("密码错误");
             }
         }else {
-            return  R.error("账号不存在或密码错误");
+            log.debug("账号不存在或密码错误");
+            throw new BusinessRuntimeException("账号不存在或密码错误");
         }
     }
 
@@ -50,11 +54,16 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>  
         LambdaQueryWrapper<Employee>  queryWrapper=new LambdaQueryWrapper<>();
         LambdaQueryWrapper<Employee> eq = queryWrapper.eq(Employee::getUsername, employee.getUsername());
         Employee emp = employeeMapper.selectOne(queryWrapper);
-        if(emp==null){
-           throw new BusinessRuntimeException("员工已存在");
+        if(emp!=null){
+            throw  new BusinessRuntimeException("账号已被他人注册");
         }
 
+        //设置初始密码
+        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
 
-        return null;
+        this.save(employee);
+        return employee;
     }
 }
