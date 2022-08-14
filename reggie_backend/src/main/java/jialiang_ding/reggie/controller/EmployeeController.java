@@ -2,16 +2,19 @@ package jialiang_ding.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jialiang_ding.reggie.common.R;
 import jialiang_ding.reggie.entity.Employee;
 import jialiang_ding.reggie.entity.dto.LoginDto;
 import jialiang_ding.reggie.exception.BusinessRuntimeException;
 import jialiang_ding.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.util.DigestUtils;
+
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -65,9 +68,24 @@ public class EmployeeController {
         employee.setUpdateUser(curuserid);
         log.info(employee.toString());
         Employee add = employeeService.add(employee);
-
         return R.success(add);
+    }
 
+
+    @GetMapping("/page")
+    public R<Page> page(@RequestParam(value = "page",required = false,defaultValue = "1")Integer page,
+                        @RequestParam(value = "pageSize",required = false,defaultValue = "10")Integer pageSize,
+                        @RequestParam(value = "name",required = false,defaultValue = "") String name){
+        //构造分页构造器
+        Page page1=new Page(page,pageSize);
+        //构造条件构造器
+        LambdaQueryWrapper<Employee> queryWrapper=new LambdaQueryWrapper();
+        //添加过滤条件
+        queryWrapper.like(StringUtils.isNotEmpty(name),Employee::getName,name);
+        queryWrapper.orderByDesc(Employee::getUpdateTime);
+        //执行查询
+        employeeService.page(page1, queryWrapper);
+        return  R.success(page1);
 
     }
 
