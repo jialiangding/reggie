@@ -57,13 +57,26 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>  
         if(emp!=null){
             throw  new BusinessRuntimeException("账号已被他人注册");
         }
-
         //设置初始密码
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
 
         this.save(employee);
+        return employee;
+    }
+
+    @Override
+    public Employee update(Employee employee) {
+
+
+        Employee emp = employeeMapper.selectById(employee.getId());
+        if(emp==null){
+            log.debug("员工更新失败");
+            throw new BusinessRuntimeException("员工更新失败");
+        }
+        employeeMapper.updateById(employee);
+
         return employee;
     }
 }

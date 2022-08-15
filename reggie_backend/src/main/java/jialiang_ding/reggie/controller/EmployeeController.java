@@ -61,6 +61,7 @@ public class EmployeeController {
     public R<Employee> save( HttpServletRequest request,@RequestBody Employee employee){
 
 //        log.info("新增员工:员工信息{}",employee.toString());
+
         Long curuserid = (Long)request.getSession().getAttribute("employee");
         log.info("id,{}",curuserid.toString());
 
@@ -68,7 +69,22 @@ public class EmployeeController {
         employee.setUpdateUser(curuserid);
         log.info(employee.toString());
         Employee add = employeeService.add(employee);
+
         return R.success(add);
+    }
+
+
+    @PutMapping
+    public R<Employee> update( HttpServletRequest request,@RequestBody Employee employee){
+
+//        log.info("新增员工:员工信息{}",employee.toString());
+        Long curuserid = (Long)request.getSession().getAttribute("employee");
+        log.info("id,{}",curuserid.toString());
+
+        employee.setCreateUser(curuserid);
+        employee.setUpdateUser(curuserid);
+        Employee update = employeeService.update(employee);
+        return  R.success(update);
     }
 
 

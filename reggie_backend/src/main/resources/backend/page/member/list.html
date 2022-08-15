@@ -82,9 +82,9 @@
               type="text"
               size="small"
               class="delBut non"
-              @click="statusHandle(scope.row)"
-              v-if="user === 'admin'"
-            >
+              @click="statusHandle(scope.row)">
+<!--              v-if="user === 'admin'"-->
+
               {{ scope.row.status == '1' ? '禁用' : '启用' }}
             </el-button>
           </template>
@@ -127,7 +127,9 @@
         computed: {},
         created() {
           this.init()
-          // this.user = JSON.parse(localStorage.getItem('userInfo')).username
+          if(localStorage.getItem("userInfo")!=null){
+            this.user = JSON.parse(localStorage.getItem('userInfo')).username
+          }
         },
         mounted() {
         },
@@ -169,6 +171,7 @@
           },
           //状态修改
           statusHandle (row) {
+
             this.id = row.id
             this.status = row.status
             this.$confirm('确认调整该账号的状态?', '提示', {
