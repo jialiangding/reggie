@@ -16,5 +16,6 @@ public interface EmployeeService  extends IService<Employee> {
     public Employee add(Employee employee);
 
     public Employee update(Employee employee);
+    public Employee datail(String id);
 
 }

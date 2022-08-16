@@ -105,6 +105,14 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/{id}")
+    public  R<Employee> getDetail(@PathVariable("id")  String id){
+        Employee datail = employeeService.datail(id);
+
+
+        return  R.success(datail);
+    }
+
 
 
 

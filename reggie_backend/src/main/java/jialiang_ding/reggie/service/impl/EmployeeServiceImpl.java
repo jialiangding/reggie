@@ -79,4 +79,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>  
 
         return employee;
     }
+
+    @Override
+    public Employee datail(String id) {
+        Employee employee = employeeMapper.selectById(Long.valueOf(id));
+
+        return employee;
+    }
 }
