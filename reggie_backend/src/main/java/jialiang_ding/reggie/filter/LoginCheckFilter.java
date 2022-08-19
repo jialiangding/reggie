@@ -2,6 +2,7 @@ package jialiang_ding.reggie.filter;
 
 import com.alibaba.fastjson.JSON;
 import jialiang_ding.reggie.common.R;
+import jialiang_ding.reggie.util.BaseContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 
@@ -20,6 +21,9 @@ import java.util.Arrays;
 @WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
 public class LoginCheckFilter  implements Filter {
 
+
+
+
     public static  final AntPathMatcher antPathMatcher=new AntPathMatcher();
 
 
@@ -28,7 +32,8 @@ public class LoginCheckFilter  implements Filter {
         HttpServletRequest request=(HttpServletRequest)servletRequest;
         HttpServletResponse response=(HttpServletResponse) servletResponse;
         Long employee1 = (Long)request.getSession().getAttribute("employee");
-        System.out.println(employee1);
+
+        BaseContextUtil.setCurrentId(employee1);
         //判断本次请求 是否需要处理
         String[] urls=new String[]{
                 "/employee/**",
@@ -48,6 +53,7 @@ public class LoginCheckFilter  implements Filter {
             filterChain.doFilter(request,response);
             return;
         }
+
 //            输出流的方式来响应数据
         log.info("访问需要登录的链接，没有登录 拦截");
         log.info(request.getRequestURI());

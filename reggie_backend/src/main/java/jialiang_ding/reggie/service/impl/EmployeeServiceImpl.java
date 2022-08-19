@@ -59,8 +59,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>  
         }
         //设置初始密码
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
 
         this.save(employee);
         return employee;

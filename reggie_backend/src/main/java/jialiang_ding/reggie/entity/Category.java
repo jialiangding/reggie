@@ -1,33 +1,20 @@
 package jialiang_ding.reggie.entity;
 
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
-import javax.validation.constraints.NotBlank;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class Employee implements Serializable {
-
+public class Category  implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-
-    private String username;
-
-    private String name;
-
-    private String password;
-
-    private String phone;
-
-    private String sex;
-
-    private String idNumber;
-
-    private Integer status;
+    private  Long id;
+    private Integer type;
+    private  String name;
+    private  Integer sort;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -41,8 +28,6 @@ public class Employee implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
 
-
     private  Integer isDelete;
 
 }
-

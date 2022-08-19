@@ -36,7 +36,13 @@ public class EmployeeControllerTest extends TestBase {
         keyMap.put("pageSize", 10L);
         MvcResult mvcResult = this.getMvc().perform(getGetRequest("/employee/page", keyMap))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        log.info(contentAsString);
+
 //        MockHttpServletResponse response = mvcResult.getResponse();
 //        log.info(response.toString());
     }
+
+
+
 }
