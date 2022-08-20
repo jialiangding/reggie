@@ -3,28 +3,33 @@ package jialiang_ding.reggie.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import org.apache.ibatis.type.BigDecimalTypeHandler;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
 /**
- * 菜品
+ * 套餐
  */
 @Data
-public class Dish implements Serializable {
+public class Setmeal implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String name;
     private Long categoryId;
+
+    private String name;
+
     private BigDecimal price;
-    private String code;
-    private String image;
-    private String description;
+
     private Integer status;
-    private Integer sort;
+
+    private String code;
+
+    private String description;
+
+    private String image;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
