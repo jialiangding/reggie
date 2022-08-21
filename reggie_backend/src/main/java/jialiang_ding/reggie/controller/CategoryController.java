@@ -54,28 +54,11 @@ public class CategoryController {
      * @return
      */
     @DeleteMapping
-    public  R<Category> delete(@RequestParam(value = "ids",required = true)String ids){
-        //查询菜品是否关联了将要关联的分类 如果有不允许删除
-        LambdaQueryWrapper<Dish> lambdaQueryWrapper=new LambdaQueryWrapper<>();
-        LambdaQueryWrapper<Dish> eq = lambdaQueryWrapper.eq(Dish::getCategoryId, ids).ne(Dish::getIsDelete,0);
-
-        Map<String, Object> map = dishService.getMap(eq);
-
-        if(map!=null){
-            log.info(map.toString());
-        }
-        int count = dishService.count(eq);
-        if(count>0){
-            throw new  BusinessRuntimeException("该分类已经关联了菜品");
-        }
+    public  R<Boolean> delete(@RequestParam(value = "ids",required = true)String ids){
+        Boolean delete = categoryService.delete(ids);
 
 
-        Category category = categoryService.getById(ids);
-        category.setIsDelete(1);
-        boolean b = categoryService.updateById(category);
-
-
-        return R.success(category);
+        return R.success(delete);
 
 
     }
