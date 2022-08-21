@@ -8,6 +8,4 @@ import jialiang_ding.reggie.entity.req.CategorySaveReq;
 
 public interface CategoryService extends IService<Category> {
    public Category save(CategorySaveReq categorySaveReq);
-   public Boolean delete(String categoryId);
-
 }

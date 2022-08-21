@@ -3,24 +3,14 @@ package jialiang_ding.reggie.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jialiang_ding.reggie.entity.Category;
-import jialiang_ding.reggie.entity.Dish;
 import jialiang_ding.reggie.entity.Employee;
-import jialiang_ding.reggie.entity.Setmeal;
 import jialiang_ding.reggie.entity.req.CategorySaveReq;
 import jialiang_ding.reggie.exception.BusinessRuntimeException;
 import jialiang_ding.reggie.mapper.CategoryMapper;
-import jialiang_ding.reggie.mapper.DishMapper;
-import jialiang_ding.reggie.mapper.SetmealMapper;
 import jialiang_ding.reggie.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> implements CategoryService {
@@ -38,7 +28,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> im
 
 
     @Override
-    public   Category save(CategorySaveReq categorySaveReq) {
+    public Category save(CategorySaveReq categorySaveReq) {
         Category category=new Category();
         BeanUtils.copyProperties(categorySaveReq,category);
         LambdaQueryWrapper<Category> queryWrapper=new LambdaQueryWrapper<>();
