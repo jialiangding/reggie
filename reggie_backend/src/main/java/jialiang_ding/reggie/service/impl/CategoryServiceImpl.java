@@ -55,6 +55,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> im
     }
 
 
+    @Override
     public Boolean delete(String categoryId) {
 
         //查询菜品是否关联了将要关联的分类 如果有不允许删除
@@ -88,5 +89,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> im
 
 
         return true;
+    }
+
+    @Override
+    public List getTypeList(Integer type) {
+        LambdaQueryWrapper<Category> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Category::getType,type).eq(Category::getIsDelete,0);
+        List<Category> categories = categoryMapper.selectList(lambdaQueryWrapper);
+        return categories;
     }
 }

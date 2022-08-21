@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,8 +24,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private DishService dishService;
+
 
 
     @GetMapping("/page")
@@ -69,6 +69,14 @@ public class CategoryController {
 
         Category save = this.categoryService.save(categorySaveReq);
         return  R.success(save);
+
+    }
+
+    @GetMapping("list")
+    public R<List<String>> list(@RequestParam(value="type")Integer type){
+        List typeList = categoryService.getTypeList(type);
+        return R.success(typeList);
+
 
     }
 
