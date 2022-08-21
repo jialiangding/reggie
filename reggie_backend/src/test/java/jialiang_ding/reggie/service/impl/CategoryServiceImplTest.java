@@ -24,6 +24,6 @@ class CategoryServiceImplTest extends TestBase {
 
     @Test
     void delete() {
-        categoryService.delete("1397844303408574465");
+      categoryService.delete("1397844303408574465");
     }
 }

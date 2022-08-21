@@ -3,14 +3,21 @@ package jialiang_ding.reggie.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jialiang_ding.reggie.entity.Category;
+import jialiang_ding.reggie.entity.Dish;
 import jialiang_ding.reggie.entity.Employee;
+import jialiang_ding.reggie.entity.Setmeal;
 import jialiang_ding.reggie.entity.req.CategorySaveReq;
 import jialiang_ding.reggie.exception.BusinessRuntimeException;
 import jialiang_ding.reggie.mapper.CategoryMapper;
+import jialiang_ding.reggie.mapper.DishMapper;
+import jialiang_ding.reggie.mapper.SetmealMapper;
 import jialiang_ding.reggie.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> implements CategoryService {
@@ -47,7 +54,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> im
 
     }
 
-    @Override
+
     public Boolean delete(String categoryId) {
 
         //查询菜品是否关联了将要关联的分类 如果有不允许删除
