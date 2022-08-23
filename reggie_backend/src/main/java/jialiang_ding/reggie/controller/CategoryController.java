@@ -75,6 +75,7 @@ public class CategoryController {
     @GetMapping("list")
     public R<List<String>> list(@RequestParam(value="type")Integer type){
         List typeList = categoryService.getTypeList(type);
+
         return R.success(typeList);
 
 
