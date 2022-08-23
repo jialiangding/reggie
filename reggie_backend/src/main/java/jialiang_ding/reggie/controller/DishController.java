@@ -30,11 +30,7 @@ public class DishController {
         queryWrapper.like(StringUtils.isNotEmpty(name),Dish::getName,name);
         queryWrapper.orderByDesc(Dish::getUpdateTime);
         queryWrapper.eq(Dish::getIsDelete,"0");
-
         dishService.page(page1,queryWrapper);
-
-
-
         return  R.success(page1);
 
     }
