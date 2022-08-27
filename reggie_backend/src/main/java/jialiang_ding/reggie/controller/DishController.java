@@ -50,4 +50,21 @@ public class DishController {
     }
 
 
+    @GetMapping("/{id}")
+    public R<DishReq> detail(@PathVariable(value = "id") Long id){
+        DishReq detail = this.dishService.detail(id);
+        return R.success(detail);
+
+    }
+
+
+    @PutMapping
+    public  R<Long> update(@RequestBody  DishReq dishReq){
+        log.info(dishReq.toString());
+        Long save = dishService.save(dishReq);
+        return R.success(save);
+    }
+
+
+
 }

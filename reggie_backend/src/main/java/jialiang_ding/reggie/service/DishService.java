@@ -11,4 +11,11 @@ public interface DishService extends IService<Dish> {
     public  Long save(DishReq dishReq);
 
     public Page<DishReq>   list(Integer page,Integer pageSize,String name);
+
+    public  DishReq detail(Long  dishId);
+
+
+
+
+
 }
