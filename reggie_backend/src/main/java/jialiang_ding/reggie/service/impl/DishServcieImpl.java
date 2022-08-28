@@ -46,49 +46,55 @@ public class DishServcieImpl extends ServiceImpl<DishMapper, Dish> implements Di
     public Long save(DishReq dishReq) {
         //更新逻辑
         if (dishReq.getId() != null) {
-            LambdaUpdateWrapper<Dish> dishLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-            dishLambdaUpdateWrapper.set(Dish::getName, dishReq.getName());
-            dishLambdaUpdateWrapper.set(Dish::getCategoryId, dishReq.getCategoryId());
-            dishLambdaUpdateWrapper.set(Dish::getPrice, dishReq.getPrice());
-            dishLambdaUpdateWrapper.set(Dish::getImage, dishReq.getImage());
-            dishLambdaUpdateWrapper.set(Dish::getDescription, dishReq.getDescription());
-            //下面这行必须有 否则就批量更新了 如下 : UPDATE dish SET name=?,category_id=?,price=?,image=?,description=?
-            dishLambdaUpdateWrapper.eq(Dish::getId, dishReq.getId());
-            dishMapper.update(null, dishLambdaUpdateWrapper);
-
+//            LambdaUpdateWrapper<Dish> dishLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+//            dishLambdaUpdateWrapper.set(Dish::getName, dishReq.getName());
+//            dishLambdaUpdateWrapper.set(Dish::getCategoryId, dishReq.getCategoryId());
+//            dishLambdaUpdateWrapper.set(Dish::getPrice, dishReq.getPrice());
+//            dishLambdaUpdateWrapper.set(Dish::getImage, dishReq.getImage());
+//            dishLambdaUpdateWrapper.set(Dish::getDescription, dishReq.getDescription());
+//            //下面这行必须有 否则就批量更新了 如下 : UPDATE dish SET name=?,category_id=?,price=?,image=?,description=?
+//            dishLambdaUpdateWrapper.eq(Dish::getId, dishReq.getId());
+//            dishMapper.update(null, dishLambdaUpdateWrapper);
+            this.updateById(dishReq);
             //更新DishFlavor表
             //查询 到dish关联的DishFlavor  isdelete置成1
             LambdaQueryWrapper<DishFlavor> dishFlavorLambdaQueryWrapper = new LambdaQueryWrapper<>();
             dishFlavorLambdaQueryWrapper.eq(DishFlavor::getDishId, dishReq.getId()).eq(DishFlavor::getIsDelete, "0");
-            List<DishFlavor> dishFlavorList = dishFlavorService.list(dishFlavorLambdaQueryWrapper);
+//            List<DishFlavor> dishFlavorList = dishFlavorService.list(dishFlavorLambdaQueryWrapper);
 
-            for (DishFlavor dishFlavor : dishFlavorList) {
-                Long id = dishFlavor.getId();
-                LambdaUpdateWrapper<DishFlavor> dishFlavorLambdaUpdateWrapper1 = new LambdaUpdateWrapper<>();
-                dishFlavorLambdaUpdateWrapper1.set(DishFlavor::getIsDelete, "1");
-                dishFlavorLambdaUpdateWrapper1.eq(DishFlavor::getId, id);
-                int update = dishFlavorMapper.update(null, dishFlavorLambdaUpdateWrapper1);
-            }
+//            for (DishFlavor dishFlavor : dishFlavorList) {
+//                Long id = dishFlavor.getId();
+//                LambdaUpdateWrapper<DishFlavor> dishFlavorLambdaUpdateWrapper1 = new LambdaUpdateWrapper<>();
+//                dishFlavorLambdaUpdateWrapper1.set(DishFlavor::getIsDelete, "1");
+//                dishFlavorLambdaUpdateWrapper1.eq(DishFlavor::getId, id);
+//                int update = dishFlavorMapper.update(null, dishFlavorLambdaUpdateWrapper1);
+//            }
+            //查询 到dish关联的DishFlavor  isdelete置成1
+            boolean remove = dishFlavorService.remove(dishFlavorLambdaQueryWrapper);
+
 
             //更新DishFlavor表
             List<DishFlavor> dishFlavorListupdate = dishReq.getFlavors();
-            for (DishFlavor dishFlavor : dishFlavorListupdate) {
-                if (dishFlavor.getId() != null) {
-                    DishFlavor dishFlavor1 = dishFlavorService.getById(dishFlavor.getId());
-                    dishFlavor1.setValue(dishFlavor.getValue());
-                    dishFlavor1.setName(dishFlavor.getName());
-                    dishFlavor1.setIsDelete(0);
-                    dishFlavorService.saveOrUpdate(dishFlavor1);
-                } else {
-                    DishFlavor dishFlavor1 = new DishFlavor();
-                    dishFlavor1.setDishId(dishReq.getId());
-                    dishFlavor1.setName(dishFlavor.getName());
-                    dishFlavor1.setValue(dishFlavor.getValue());
-                    dishFlavorService.save(dishFlavor1);
-                }
-
-            }
-
+//            for (DishFlavor dishFlavor : dishFlavorListupdate) {
+//                if (dishFlavor.getId() != null) {
+//                    DishFlavor dishFlavor1 = dishFlavorService.getById(dishFlavor.getId());
+//                    dishFlavor1.setValue(dishFlavor.getValue());
+//                    dishFlavor1.setName(dishFlavor.getName());
+//                    dishFlavor1.setIsDelete(0);
+//                    dishFlavorService.saveOrUpdate(dishFlavor1);
+//                } else {
+//                    DishFlavor dishFlavor1 = new DishFlavor();
+//                    dishFlavor1.setDishId(dishReq.getId());
+//                    dishFlavor1.setName(dishFlavor.getName());
+//                    dishFlavor1.setValue(dishFlavor.getValue());
+//                    dishFlavorService.save(dishFlavor1);
+//                }
+//            }
+            List<DishFlavor> collect = dishFlavorListupdate.stream().map(dishFlavor -> {
+                dishFlavor.setDishId(dishReq.getId());
+                return dishFlavor;
+            }).collect(Collectors.toList());
+            dishFlavorService.saveBatch(collect);
             return dishReq.getId();
 
 
