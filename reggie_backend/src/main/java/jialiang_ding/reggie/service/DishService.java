@@ -6,6 +6,8 @@ import jialiang_ding.reggie.entity.Dish;
 import jialiang_ding.reggie.entity.req.DishReq;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 public interface DishService extends IService<Dish> {
     public  Long save(DishReq dishReq);
@@ -13,6 +15,7 @@ public interface DishService extends IService<Dish> {
     public Page<DishReq>   list(Integer page,Integer pageSize,String name);
 
     public  DishReq detail(Long  dishId);
+    public List<Dish> listByCategoryId(Long categoryId);
 
 
 

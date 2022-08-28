@@ -66,5 +66,16 @@ public class DishController {
     }
 
 
+    @GetMapping("/list")
+    public R list(@RequestParam(value ="categoryId" ) Long categoryId){
+
+        List<Dish> dishes = dishService.listByCategoryId(categoryId);
+    return R.success(dishes);
+
+    }
+
+
+
+
 
 }
