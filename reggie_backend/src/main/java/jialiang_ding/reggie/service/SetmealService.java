@@ -19,6 +19,6 @@ public interface SetmealService  extends IService<Setmeal>{
 
 
 
-
+    public   Long updateBySetmealDto(SetmealDto setmealDto);
 
 }

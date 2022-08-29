@@ -25,7 +25,8 @@ public class SetmealServiceImpl  extends ServiceImpl<SetmealMapper, Setmeal> imp
 
 
 
-
+    @Autowired
+    private SetmealService  setmealService;
 
 
 
@@ -69,5 +70,27 @@ public class SetmealServiceImpl  extends ServiceImpl<SetmealMapper, Setmeal> imp
         List<SetmealDish> setmealDishList= setmealDishService.list(setmealDishLambdaQueryWrapper);
         setmealDto.setSetmealDishes(setmealDishList);
         return setmealDto;
+    }
+
+    @Override
+    public Long updateBySetmealDto(SetmealDto setmealDto) {
+
+        setmealService.updateById(setmealDto);
+      //删除原来的，给新增 的赋id
+
+        LambdaQueryWrapper<SetmealDish> setmealDishLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        setmealDishLambdaQueryWrapper.eq(SetmealDish::getSetmealId,setmealDto.getId());
+
+        setmealDishService.remove(setmealDishLambdaQueryWrapper);
+
+        List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
+        List<SetmealDish> collect = setmealDishes.stream().map(setmealDish -> {
+            setmealDish.setSetmealId(setmealDto.getId());
+            return setmealDish;
+
+        }).collect(Collectors.toList());
+        setmealDishService.saveBatch(collect);
+
+        return setmealDto.getId();
     }
 }

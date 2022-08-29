@@ -46,6 +46,14 @@ public class SetmealController {
 
 
 
+    @PutMapping
+    public  R<Long> update(@RequestBody SetmealDto setmealDto){
+        Long update = setmealService.updateBySetmealDto(setmealDto);
+        return R.success(update);
+
+    }
+
+
 
 
 
