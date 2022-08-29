@@ -15,6 +15,10 @@ public interface SetmealService  extends IService<Setmeal>{
 
 
 
+    public  SetmealDto  detail(Long setmealId);
+
+
+
 
 
 }

@@ -9,6 +9,7 @@ import jialiang_ding.reggie.entity.dto.SetmealDto;
 import jialiang_ding.reggie.mapper.SetmealMapper;
 import jialiang_ding.reggie.service.SetmealDishService;
 import jialiang_ding.reggie.service.SetmealService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,14 +51,23 @@ public class SetmealServiceImpl  extends ServiceImpl<SetmealMapper, Setmeal> imp
             setmealDish.setDishId(setmealDishe.getDishId());
             setmealDish.setSetmealId(setmealDto.getId());
             setmealDish.setSort("0");
+            setmealDish.setName(setmealDishe.getName());
+            setmealDish.setPrice(setmealDishe.getPrice());
             return setmealDish;
-
-
         }).collect(Collectors.toList());
         boolean b = setmealDishService.saveBatch(collect);
-
-
-
         return setmealDto.getId();
+    }
+
+    @Override
+    public SetmealDto detail(Long setmealId) {
+        Setmeal setmeal = this.getById(setmealId);
+        SetmealDto setmealDto=new SetmealDto();
+        BeanUtils.copyProperties(setmeal,setmealDto);
+        LambdaQueryWrapper<SetmealDish> setmealDishLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        setmealDishLambdaQueryWrapper.eq(SetmealDish::getSetmealId, setmealId).eq(SetmealDish::getIsDelete, "0");
+        List<SetmealDish> setmealDishList= setmealDishService.list(setmealDishLambdaQueryWrapper);
+        setmealDto.setSetmealDishes(setmealDishList);
+        return setmealDto;
     }
 }

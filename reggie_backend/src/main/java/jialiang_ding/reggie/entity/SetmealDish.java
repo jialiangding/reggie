@@ -17,10 +17,10 @@ public class SetmealDish implements Serializable {
     private Long id;
     private Long setmealId;
     private Long  dishId;
-
     private  Integer copies;
-
     private  String  sort;
+    private String name;
+    private BigDecimal price;
 
 
     @TableField(fill = FieldFill.INSERT)

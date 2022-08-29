@@ -37,6 +37,13 @@ public class SetmealController {
 
 
 
+    @GetMapping("/{id}")
+    public  R<SetmealDto> detail(@PathVariable(value = "id") Long setmealId){
+        SetmealDto detail = setmealService.detail(setmealId);
+        return R.success(detail);
+
+    }
+
 
 
 
