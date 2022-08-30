@@ -3,10 +3,12 @@ package jialiang_ding.reggie.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jialiang_ding.reggie.entity.Category;
 import jialiang_ding.reggie.entity.Setmeal;
 import jialiang_ding.reggie.entity.SetmealDish;
 import jialiang_ding.reggie.entity.dto.SetmealDto;
 import jialiang_ding.reggie.mapper.SetmealMapper;
+import jialiang_ding.reggie.service.CategoryService;
 import jialiang_ding.reggie.service.SetmealDishService;
 import jialiang_ding.reggie.service.SetmealService;
 import org.springframework.beans.BeanUtils;
@@ -30,13 +32,41 @@ public class SetmealServiceImpl  extends ServiceImpl<SetmealMapper, Setmeal> imp
 
 
 
+    @Autowired
+    private CategoryService categoryService;
+
 
     @Override
-    public Page<Setmeal> list(Integer page, Integer pageSize, String name) {
+    public Page<SetmealDto> list(Integer page, Integer pageSize, String name) {
         Page page1=new Page(page,pageSize);
         LambdaQueryWrapper<Setmeal> setmealLambdaQueryWrapper=new LambdaQueryWrapper<>();
         setmealLambdaQueryWrapper.like(Setmeal::getName,name).eq(Setmeal::getIsDelete,"0").orderByDesc(Setmeal::getCreateTime);
-        return   this.page(page1, setmealLambdaQueryWrapper);
+
+        this.page(page1, setmealLambdaQueryWrapper);
+
+        Page<SetmealDto> setmealDtoPage=new Page<>(page,pageSize);
+        BeanUtils.copyProperties(page1,setmealDtoPage,"records");
+
+
+        List<Setmeal> list = this.setmealService.list(setmealLambdaQueryWrapper);
+
+        List<SetmealDto> collect = list.stream().map(setmeal -> {
+            SetmealDto setmealDto=new SetmealDto();
+            BeanUtils.copyProperties(setmeal, setmealDto);
+            Category category = categoryService.getById(setmeal.getCategoryId());
+            setmealDto.setCategoryName(category.getName());
+            return setmealDto;
+        }).collect(Collectors.toList());
+
+        setmealDtoPage.setRecords(collect);
+
+
+
+
+
+
+
+        return setmealDtoPage;
 
     }
 

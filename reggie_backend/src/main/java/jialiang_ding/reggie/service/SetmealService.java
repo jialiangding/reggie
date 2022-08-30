@@ -8,7 +8,7 @@ import jialiang_ding.reggie.entity.dto.SetmealDto;
 
 public interface SetmealService  extends IService<Setmeal>{
 
-    public Page<Setmeal> list(Integer page,Integer pageSize,String name);
+    public  Page<SetmealDto> list(Integer page,Integer pageSize,String name);
 
 
     public  Long add(SetmealDto setmealDto);
