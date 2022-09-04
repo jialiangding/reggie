@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
         <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
         <title>菩提阁</title>
@@ -29,6 +30,10 @@
             </div>
 <!--            <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>-->
             <el-button type="primary" :class="{btnSubmit:1===1,btnNoPhone:!form.username,btnPhone:form.username}" @click="btnLogin">登录</el-button>
+            <el-button type="primary"  @click="btnLogin">注册</el-button>
+
+
+
         </div>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
         <script src="../../backend/plugins/vue/vue.js"></script>
@@ -84,7 +89,13 @@
                     }else{
                         this.$notify({ type:'warning', message:'请输入用户名'});
                     }
+                },
+                toRegisterPage(){
+                    window.requestAnimationFrame(()=>{
+                        window.location.href= '/front/page/address-edit.html'
+                    })
                 }
+
             }
         })
     </script>
