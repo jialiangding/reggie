@@ -24,7 +24,15 @@ public class UserController {
 
         return R.success(login);
 
+    }
 
+
+
+    @PostMapping("/register")
+    public R<Boolean> register(@RequestBody UserLoginReq userLoginReq){
+        Boolean login = userService.login(userLoginReq);
+
+        return R.success(login);
 
     }
 }

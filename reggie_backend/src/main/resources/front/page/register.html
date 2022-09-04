@@ -29,21 +29,14 @@
 
 <div id="register" v-loading="loading">
     <div class="divHead">注册</div>
-    <el-form ref="loginForm" :model="registerForm" :rules="registerRules">
-
-         <el-form-item prop="username">
-
-                    <el-input v-model="registerForm.username" type="text" auto-complete="off" placeholder="账号" maxlength="20"
-
-                      prefix-icon="iconfont icon-user" />
-
-                  </el-form-item>
-
-            <el-form-item prop="password">
-                       <el-input v-model="registerForm.password" type="text" auto-complete="off" placeholder="密码" maxlength="20"
-                         prefix-icon="iconfont icon-user" />
-                     </el-form-item>
-    </el-form>
+    <div class="divContainer">
+        <el-input placeholder="请输入账号" v-model="registerForm.username"  maxlength='20'/></el-input>
+        <div class="divSplit"></div>
+        <el-input placeholder=" 请输入密码" v-model="registerForm.password"  maxlength='20'/></el-input>
+        <!--                <span @click='getCode'>获取验证码</span>-->
+    </div>
+    <!--            <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>-->
+    <el-button type="primary"  @click="btnRegister">注册</el-button>
 
 
 </div>
@@ -66,78 +59,42 @@
         data() {
             return {
                 registerForm: {
-                         username: 'admin',
-                         password: '123456'
-                } ,
+                    username: '',
+                    password: ''
+                },
                 loading: false
 
             }
-        } ,
-        computed:{
+        },
+        computed: {},
+        created() {
+        },
+        mounted() {
+        },
+        methods:{
+            async btnRegister(){
+                if(this.registerForm.username && this.registerForm.password){
+                    this.loading = true
+                    const res = await registerApi(this.registerForm)
+                    if(res.code===1){
+                        window.requestAnimationFrame(()=>{
+                            window.location.href= '/front/page/login.html'
+                        })
 
-              registerRules() {
-          const validateUsername = (rule, value, callback) => {
-            if (value.length < 1 ) {
-              callback(new Error('请输入用户名'))
-            } else {
-              callback()
+                    }else {
+                        this.$notify({ type:'warning', message:res.msg});
+                    }
+                }else{
+                    this.$notify({ type:'warning', message:'请检查表单'});
+                }
+
             }
-          }
-          const validatePassword = (rule, value, callback) => {
-            if (value.length < 6) {
-              callback(new Error('密码必须在6位以上'))
-            } else {
-              callback()
-            }
-          }
-          return {
-            'username': [{ 'validator': validateUsername, 'trigger': 'blur' }],
-            'password': [{ 'validator': validatePassword, 'trigger': 'blur' }]
-          }
+
+
+
         }
-        registerRules(){
-              loginRules() {
-          const validateUsername = (rule, value, callback) => {
-            if (value.length < 1 ) {
-              callback(new Error('请输入用户名'))
-            } else {
-              callback()
-            }
-          }
-          const validatePassword = (rule, value, callback) => {
-            if (value.length < 6) {
-              callback(new Error('密码必须在6位以上'))
-            } else {
-              callback()
-            }
-          }
-          return {
-            'username': [{ 'validator': validateUsername, 'trigger': 'blur' }],
-            'password': [{ 'validator': validatePassword, 'trigger': 'blur' }]
-          }
-        }
-              loginRules() {
-          const validateUsername = (rule, value, callback) => {
-            if (value.length < 1 ) {
-              callback(new Error('请输入用户名'))
-            } else {
-              callback()
-            }
-          }
-          const validatePassword = (rule, value, callback) => {
-            if (value.length < 6) {
-              callback(new Error('密码必须在6位以上'))
-            } else {
-              callback()
-            }
-          }
-          return {
-            'username': [{ 'validator': validateUsername, 'trigger': 'blur' }],
-            'password': [{ 'validator': validatePassword, 'trigger': 'blur' }]
-          }
-        }
-            
-        }
+
+
 
     })
 

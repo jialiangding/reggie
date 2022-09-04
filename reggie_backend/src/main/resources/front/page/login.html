@@ -77,7 +77,6 @@
                     if(this.form.username && this.form.password){
                         this.loading = true
                         const res = await loginApi(this.form)
-                        this.loading = false
                         if(res.code === 1){
                             sessionStorage.setItem("username",this.form.username)
                             window.requestAnimationFrame(()=>{
