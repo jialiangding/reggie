@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/register")
     public R<Boolean> register(@RequestBody UserLoginReq userLoginReq){
-        Boolean login = userService.login(userLoginReq);
+        Boolean login = userService.register(userLoginReq);
 
         return R.success(login);
 

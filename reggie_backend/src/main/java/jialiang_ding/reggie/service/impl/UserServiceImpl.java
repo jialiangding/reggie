@@ -18,6 +18,7 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, User> implements U
 
 
 
+
     @Override
     public Boolean login(UserLoginReq loginReq) {
         String password=loginReq.getPassword();
@@ -41,7 +42,17 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, User> implements U
 
     @Override
     public Boolean register(UserLoginReq loginReq) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getUsername,loginReq.getUsername());
+        User one = this.getOne(lambdaQueryWrapper);
+        if(one!=null){
+            throw new BusinessRuntimeException("账号已注册");
+        }
+        User user=new User();
+        user.setUsername(loginReq.getUsername());
+        user.setPassword(DigestUtils.md5DigestAsHex(loginReq.getPassword().getBytes()));
+        this.save(user);
+        return true;
 
-        return null;
     }
 }
