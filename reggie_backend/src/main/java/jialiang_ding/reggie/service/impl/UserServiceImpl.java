@@ -20,7 +20,7 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, User> implements U
 
 
     @Override
-    public Boolean login(UserLoginReq loginReq) {
+    public User login(UserLoginReq loginReq) {
         String password=loginReq.getPassword();
         String username=loginReq.getUsername();
         password= DigestUtils.md5DigestAsHex(password.getBytes());
@@ -36,7 +36,7 @@ public class UserServiceImpl  extends ServiceImpl<UserMapper, User> implements U
         if(one.getStatus().equals(0)){
             throw  new BusinessRuntimeException("账号被禁用");
         }
-        return true;
+        return one;
 
     }
 

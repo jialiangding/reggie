@@ -56,10 +56,19 @@ public class LoginCheckFilter  implements Filter {
             return;
         }
 
+        Object user = ((HttpServletRequest) servletRequest).getSession().getAttribute("userid");
+        if (user!=null){
+            //非空说明已经登录过了
+            log.info("有登录过 直接放行");
+            filterChain.doFilter(request,response);
+            return;
+        }
+
+        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
+
 //            输出流的方式来响应数据
         log.info("访问需要登录的链接，没有登录 拦截");
         log.info(request.getRequestURI());
-        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
         return;
 
 

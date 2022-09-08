@@ -28,16 +28,38 @@
 
 
 <div id="register" v-loading="loading">
-    <div class="divHead">注册</div>
-    <div class="divContainer">
-        <el-input placeholder="请输入账号" v-model="registerForm.username"  maxlength='20'/></el-input>
-        <div class="divSplit"></div>
-        <el-input placeholder=" 请输入密码" v-model="registerForm.password"  maxlength='20'/></el-input>
-        <!--                <span @click='getCode'>获取验证码</span>-->
-    </div>
-    <!--            <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>-->
-    <el-button type="primary"  @click="btnRegister">注册</el-button>
+<!--    <div class="divHead">注册</div>-->
+<!--    <div class="divContainer">-->
+<!--        <el-input placeholder="请输入账号" v-model="registerForm.username"  maxlength='20'/></el-input>-->
+<!--        <div class="divSplit"></div>-->
+<!--        <el-input placeholder=" 请输入密码" v-model="registerForm.password"  maxlength='20'/></el-input>-->
+<!--        &lt;!&ndash;                <span @click='getCode'>获取验证码</span>&ndash;&gt;-->
+<!--    </div>-->
+<!--    &lt;!&ndash;            <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>&ndash;&gt;-->
+<!--    <el-button type="primary"  @click="btnRegister">注册</el-button>-->
 
+
+    <van-form @submit="onSubmit">
+        <van-field
+                v-model="registerForm.username"
+                name="用户名"
+                label="用户名"
+                placeholder="用户名"
+                :rules="[{ required: true, message: '请填写用户名' }]"
+        > </van-field>
+        <van-field
+                v-model="registerForm.password"
+                type="password"
+                name="密码"
+                label="密码"
+                placeholder="密码"
+                :rules="[{ required: true, message: '请填写密码' }]"
+        ></van-field>
+
+        <div style="margin: 16px;">
+            <van-button round block type="info" native-type="submit"   @click="btnRegister">提交</van-button>
+        </div>
+    </van-form>
 
 </div>
 
@@ -85,8 +107,6 @@
                         this.loading = false
                         this.$notify({ type:'warning', message:res.msg});
                     }
-                }else{
-                    this.$notify({ type:'warning', message:'请检查表单'});
                 }
 
             }

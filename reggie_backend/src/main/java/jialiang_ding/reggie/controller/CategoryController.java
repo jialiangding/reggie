@@ -77,8 +77,6 @@ public class CategoryController {
         List typeList = categoryService.getTypeList(type);
 
         return R.success(typeList);
-
-
     }
 
 
