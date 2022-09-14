@@ -4,6 +4,7 @@ import jialiang_ding.reggie.common.R;
 import jialiang_ding.reggie.entity.User;
 import jialiang_ding.reggie.entity.req.UserLoginReq;
 import jialiang_ding.reggie.service.UserService;
+import jialiang_ding.reggie.util.BaseContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +22,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @PostMapping("/login")
     public R<User> login(@RequestBody UserLoginReq userLoginReq, HttpServletRequest request){
         User login = userService.login(userLoginReq);
         request.getSession().setAttribute("userid",login.getId());
+        BaseContextUtil.setCurrentUser(login.getId());
         return R.success(login);
 
     }
@@ -34,7 +37,6 @@ public class UserController {
     @PostMapping("/register")
     public R<Boolean> register(@RequestBody UserLoginReq userLoginReq){
         Boolean login = userService.register(userLoginReq);
-
         return R.success(login);
 
     }

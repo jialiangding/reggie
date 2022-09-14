@@ -56,8 +56,13 @@ public class LoginCheckFilter  implements Filter {
             return;
         }
 
-        Object user = ((HttpServletRequest) servletRequest).getSession().getAttribute("userid");
-        if (user!=null){
+
+
+        Long userid =(Long)request.getSession().getAttribute("userid");
+        BaseContextUtil.setCurrentId(userid);
+
+
+        if (userid!=null){
             //非空说明已经登录过了
             log.info("有登录过 直接放行");
             filterChain.doFilter(request,response);
