@@ -33,8 +33,8 @@ public class AddressBookController {
 
 
     @PostMapping
-    public R<String> add(@RequestBody AddressBookReq addressBookReq ){
-        String save = addressBookService.save(addressBookReq);
+    public R<Long> add(@RequestBody AddressBookReq addressBookReq ){
+        Long save = addressBookService.save(addressBookReq);
         return  R.success(save);
     }
 
@@ -42,7 +42,15 @@ public class AddressBookController {
     @PutMapping("/default")
     public R<String> setdefault(@RequestBody AddressBook addressBook){
 
-        return  R.success("save");
+        String setdefalut = addressBookService.setdefalut(addressBook);
+
+        return  R.success(setdefalut);
     }
 
+
+    @GetMapping("/{id}")
+    public R<AddressBook> setdefault(@PathVariable("id") String id){
+        AddressBook detailById = addressBookService.getDetailById(id);
+        return  R.success(detailById);
+    }
 }

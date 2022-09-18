@@ -27,7 +27,7 @@ function  addAddressApi(data){
 function  updateAddressApi(data){
     return $axios({
         'url': '/addressBook',
-        'method': 'put',
+        'method': 'post',
         data
       })
 }

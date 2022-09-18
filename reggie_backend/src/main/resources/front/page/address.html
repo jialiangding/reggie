@@ -127,6 +127,7 @@
                     },
                     async initData(){
                         const res = await addressListApi()
+
                         if(res.code === 1){
                             this.addressList = res.data
                         }else{

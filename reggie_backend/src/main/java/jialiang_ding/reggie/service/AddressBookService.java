@@ -11,5 +11,11 @@ public interface AddressBookService  extends IService<AddressBook> {
 
     List<AddressBook> listByUserId(Long userId);
 
-    String save(AddressBookReq addressBookReq);
+    Long save(AddressBookReq addressBookReq);
+
+    String setdefalut(AddressBook addressBook);
+
+
+    AddressBook getDetailById(String id);
+
 }
