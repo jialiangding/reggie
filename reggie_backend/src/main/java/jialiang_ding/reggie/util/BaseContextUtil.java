@@ -12,8 +12,6 @@ public class BaseContextUtil {
     private static final ThreadLocal<Long> userId = new ThreadLocal<>();
 
 
-
-
     public static void setCurrentUser(Long userId) {
         BaseContextUtil.userId.set(userId);
     }
